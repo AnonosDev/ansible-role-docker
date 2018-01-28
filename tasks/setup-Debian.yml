@@ -38,3 +38,10 @@
     repo: "{{ docker_apt_repository }}"
     state: present
     update_cache: yes
+  ignore_errors: yes
+  register: docker_repo
+
+- name: Add Docker repository when ansible fails
+  shell: 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable'
+  when: docker_repo|failed
+
